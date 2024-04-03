@@ -1,0 +1,24 @@
+name: Commit Checker
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  check-commit-message:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Check commit message
+      run: |
+        commit_message=$(git log -1 --pretty=%B)
+        if [[ $commit_message == *"slack"* || $commit_message == *"notify"* ]]; then
+          echo "Commit message that asks to send a message on slack!"
+          .github/actions/send-message.sh
+        else
+          echo "Commit message does not include anything funny or cool."
+        fi
