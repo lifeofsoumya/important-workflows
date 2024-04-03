@@ -1,2 +1,5 @@
 echo "Important commit pushed!"
-# curl -X POST -d 'message=important commit pushed to main branch!' https://slack.com/api/chat.postMessage
+SLACK_API_URL="https://hooks.slack.com/services/T06S7MSJPK9/B06SN6Z17LK/${{ secrets.SLACK_KEY }}"
+MESSAGE="An Important commit pushed :tada:"
+
+curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"$MESSAGE\"}" "$SLACK_API_URL"
