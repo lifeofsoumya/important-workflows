@@ -10,15 +10,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Check commit message
-      run: |
-        commit_message=$(git log -1 --pretty=%B)
-        if [[ $commit_message == *"slack"* || $commit_message == *"notify"* ]]; then
-          echo "Commit message that asks to send a message on slack!"
-          .github/actions/send-message.sh
-        else
-          echo "Commit message does not include anything funny or cool."
-        fi
+      - name: Check commit message
+        run: |
+          commit_message=$(git log -1 --pretty=%B)
+          if [[ $commit_message == *"slack"* || $commit_message == *"notify"* ]]; then
+            echo "Commit message that asks to send a message on slack!"
+            # secrets not directly available in shell file so pass as argument
+            .github/actions/send-message.sh ${{ secrets.SLACK_KEY }}
+          else
+            echo "Commit message does not include anything funny or cool."
+          fi
